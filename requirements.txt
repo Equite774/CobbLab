@@ -1,0 +1,20 @@
+# Core NetCDF and array handling
+xarray
+netCDF4
+numpy
+
+# Plotting and visualization
+matplotlib
+cmocean
+
+# Cartographic plotting
+cartopy
+
+# Optional: Improved styling and color maps
+seaborn
+
+# Jupyter (optional, but useful for exploration)
+jupyterlab
+
+# Needed for text handling
+regex
