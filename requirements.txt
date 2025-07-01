@@ -17,4 +17,8 @@ seaborn
 jupyterlab
 
 # Needed for text handling
-regex
+
+
+# Stats
+statsmodels
+scikit-learn
