@@ -47,19 +47,27 @@ def load_dataset_6(path):
     df.rename(columns={"supplementary_salinity": "sup_salinity"}, inplace=True)
     return df[["month", "sup_salinity"]].groupby("month").mean().reset_index()
 
-def unify_all(p1, p2, p3, p4, p5, p6, output_path):
+def load_dataset_7(path):
+    df = pd.read_csv(path)
+    df["month"] = pd.to_datetime(df["time"], errors="coerce").dt.to_period("M")
+    df.rename(columns={"comp_sss": "comp_salinity"}, inplace=True)
+    return df[["month", "comp_salinity"]].groupby("month").mean().reset_index()
+
+def unify_all(p1, p2, p3, p4, p5, p6, p7, output_path):
     df1 = load_dataset_1(p1)
     df2 = load_dataset_2(p2)
     df3 = load_dataset_3(p3)
     df4 = load_dataset_4(p4)
     df5 = load_dataset_5(p5)
     df6 = load_dataset_6(p6)
+    df7 = load_dataset_7(p7)
 
     merged = df1.merge(df2, on="month", how="outer")
     merged = merged.merge(df3, on="month", how="outer")
     merged = merged.merge(df4, on="month", how="outer")
     merged = merged.merge(df5, on="month", how="outer")
     merged = merged.merge(df6, on="month", how="outer")
+    merged = merged.merge(df7, on="month", how="outer")
 
     merged.sort_values("month", inplace=True)
     merged.to_csv(output_path, index=False)
@@ -72,4 +80,5 @@ if __name__ == "__main__":
     sal_path = 'csv/IAP_Salinity_Dataset_37.5_21.0.csv'
     aux_sal_path = 'd18O_correlation/AuxiliarySalinityData.csv'
     sup_sal_path = 'd18O_correlation/SupplementarySalinityData.csv'
-    unify_all(sst_path, coral_data_path, coral_d18O_path, sal_path, aux_sal_path, sup_sal_path, output_path)
+    comp_sal_path = 'd18O_correlation/ComplementarySalinityData.csv'
+    unify_all(sst_path, coral_data_path, coral_d18O_path, sal_path, aux_sal_path, sup_sal_path, comp_sal_path, output_path)
